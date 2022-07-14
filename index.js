@@ -1,13 +1,13 @@
 window.onload = function() {
   // production configuration in kraken.fm
-  //const KRAKEN_API = 'https://rpc.kraken.fm';
-  //const ROOM_PARAM = 'PATH';
-  //const ICE_POLICY = 'relay';
+  const KRAKEN_API = 'https://rpc.kraken.fm';
+  const ROOM_PARAM = 'QUERY';
+  const ICE_POLICY = 'relay';
 
   // good for local development
-  const KRAKEN_API = 'http://localhost:7000';
-  const ROOM_PARAM = 'QUERY';
-  const ICE_POLICY = 'all';
+  // const KRAKEN_API = 'http://localhost:7000';
+  // const ROOM_PARAM = 'QUERY';
+  // const ICE_POLICY = 'all';
 
   /**
    *
@@ -184,8 +184,16 @@ window.onload = function() {
     document.getElementById('invalid').style.display = 'block';
     return;
   }
+  let  generateUUID = ()=> {
+    if (crypto.randomUUID != undefined) {
+        return crypto.randomUUID();
+    }
+    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+    );
+  }
 
-  var name = localStorage.getItem(rname+':'+uid);
+  var name = generateUUID();
   if (!name || name === '') {
     document.getElementById('form').style.display = 'block';
     document.getElementById('name-submit').onclick = function () {
